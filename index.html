@@ -1,96 +1,530 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zerogrowth – Experiments with Meaning</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zerogrowth — Experiments with Meaning</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <meta name="description" content="Zerogrowth — indie venture lab. Building experiments in AI, automation, games, robotics and creative products." />
+
   <style>
-    body { background-color: #0d0d0d; color: #fefefe; }
-    .glow-red:hover { text-shadow: 0 0 8px #e63946; }
-    canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+    :root{
+      --bg:#0d0d0d;
+      --panel:#0f1113;
+      --muted:#bfc7cf;
+      --white:#f7f9fb;
+      --accent:#e63946;
+      --accent-2:#ff6f61;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --shadow: 0 8px 30px rgba(0,0,0,0.6);
+      --radius: 14px;
+      --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg) 0%, #070708 100%);
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.5;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Canvas background */
+    #bg-canvas{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      display:block;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(230,57,70,0.04), transparent 6%),
+                  radial-gradient(900px 400px at 90% 80%, rgba(255,111,97,0.03), transparent 6%);
+    }
+
+    /* Layout */
+    .wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:40px 20px;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+    .brand{
+      display:flex;align-items:center;gap:14px;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:#111;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 24px rgba(230,57,70,0.08);
+      border:1px solid rgba(255,255,255,0.03);
+      font-family: "Space Grotesk", Inter, sans-serif;
+      color:var(--accent);
+      font-weight:700;font-size:20px;
+    }
+    .brand h1{font-family:"Space Grotesk",Inter,sans-serif;font-size:18px;margin:0;color:var(--white);letter-spacing:0.6px}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+
+    .nav{
+      display:flex;gap:12px;align-items:center;
+    }
+    .nav a{
+      padding:8px 12px;border-radius:10px;color:var(--muted);font-size:14px;background:transparent;border:1px solid transparent;
+    }
+    .nav a.cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;box-shadow:0 6px 20px rgba(230,57,70,0.12)}
+    .nav a:hover{color:var(--white)}
+
+    /* Main Hero */
+    .main-hero{min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 24px; font-size: 24px;}
+
+    /* Hero */
+    .hero{display:flex;flex-direction:column;align-items:flex-start;padding:48px 24px;border-radius:16px;background:linear-gradient(180deg,var(--glass),var(--glass-2));box-shadow:var(--shadow);margin-bottom:36px}
+    .hero-top{display:flex;gap:18px;align-items:center;width:100%}
+    .hero-left{flex:1}
+    .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(230,57,70,0.08);color:var(--accent);font-weight:600;font-size:13px;border:1px solid rgba(230,57,70,0.06)}
+    .title{font-family:"Space Grotesk",Inter,sans-serif;font-size:34px;margin:18px 0 8px;color:var(--white);line-height:1.02}
+    .subtitle{color:var(--muted);max-width:760px}
+    .typing{display:block;color:var(--accent);font-weight:700;margin-top:12px;font-family:monospace}
+
+    .hero-right{width:260px;display:flex;flex-direction:column;gap:12px;align-items:center}
+    .stats-card{width:100%;background:#0b0b0b;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);text-align:center}
+    .stats-card img{width:100%;border-radius:8px}
+
+    /* Sections */
+    section{margin-bottom:36px}
+    h2.section-title{font-family:"Space Grotesk",Inter,sans-serif;color:var(--accent);margin:0 0 16px;font-size:20px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 6px 18px rgba(0,0,0,0.5)}
+
+    /* About & timeline */
+    .about-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+    .about p{color:var(--muted);margin-bottom:12px}
+    .timeline{background:#0b0b0b;padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .tl-item{padding:10px 8px;border-left:3px solid rgba(255,255,255,0.03);margin-bottom:10px}
+    .tl-item strong{display:block;color:var(--white)}
+    .tl-item span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+
+    /* Projects grid */
+    .filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+    .filter-btn{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
+    .filter-btn.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 8px 24px rgba(230,57,70,0.08)}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:12px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s ease,box-shadow .22s ease;cursor:pointer;position:relative;overflow:hidden}
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.6)}
+    .card h3{margin:0 0 8px;font-size:18px;color:var(--white)}
+    .card p{color:var(--muted);font-size:14px;margin:0}
+    .card .tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .chip{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+
+    /* Card overlay detail */
+    .card .detail{
+      position:absolute;inset:0;background:linear-gradient(180deg, rgba(13,13,13,0.95), rgba(13,13,13,0.98));transform:translateY(100%);transition:transform .28s cubic-bezier(.2,.9,.3,1);padding:18px;display:flex;flex-direction:column;justify-content:center
+    }
+    .card:hover .detail{transform:translateY(0)}
+    .detail small{color:var(--muted);display:block;margin-bottom:10px}
+    .detail a.btn{align-self:flex-start;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;font-weight:600}
+
+    /* Manifesto */
+    .manifesto{padding:36px;border-radius:12px;background:linear-gradient(180deg, rgba(230,57,70,0.04), rgba(0,0,0,0));border:1px solid rgba(255,255,255,0.02)}
+    .manifesto p{font-size:18px;color:var(--white);max-width:900px;margin:0 auto 12px}
+
+    /* Contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    .contact-card{padding:18px;border-radius:12px;background:#0b0b0b;border:1px solid rgba(255,255,255,0.02)}
+    .contact-card h4{margin:0 0 8px}
+    .contact-list{display:flex;flex-direction:column;gap:8px}
+    .contact-list a{color:var(--muted);background:transparent;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);display:inline-block}
+
+    /* Footer */
+    footer.sitefoot{text-align:center;padding:30px 10px;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.02);margin-top:40px}
+
+    /* Responsive */
+    @media (max-width:960px){
+      .about-grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .hero-right{display:none}
+      .wrap{padding:20px}
+      .title{font-size:28px}
+    }
   </style>
 </head>
-<body class="font-inter">
-  <canvas id="bg"></canvas>
+<body>
+  <!-- Background canvas -->
+  <canvas id="bg-canvas"></canvas>
 
-  <!-- Hero Section -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6">
-    <h1 class="text-5xl md:text-7xl font-bold glow-red mb-4">ZEROGROWTH</h1>
-    <p id="typing" class="text-lg md:text-2xl text-red-500 font-mono"></p>
-    <p class="mt-6 max-w-2xl text-gray-300">Growth starts at Zero. Zerogrowth is where experiments become meaning. We build, test, and evolve projects until they find their true shape.</p>
-  </section>
-
-  <!-- Projects Section -->
-  <section class="max-w-6xl mx-auto py-20 px-6">
-    <h2 class="text-3xl font-bold text-red-500 mb-8">Experiments</h2>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-[#111] p-6 rounded-2xl shadow hover:shadow-red-600/50 transition">
-        <h3 class="text-xl font-bold mb-2">ZG_BTrade</h3>
-        <p class="text-gray-400">Backtesting & trading lab evolving into full analytical system.</p>
+  <div class="wrap">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="logo">ZG</div>
+        <div>
+          <h1>Zerogrowth</h1>
+          <p>Independent venture lab • experiments • spin-offs</p>
+        </div>
       </div>
-      <div class="bg-[#111] p-6 rounded-2xl shadow hover:shadow-red-600/50 transition">
-        <h3 class="text-xl font-bold mb-2">0-Day</h3>
-        <p class="text-gray-400">Emotional & tactical 2D game. A testbed for game + emotion systems.</p>
+
+      <nav class="nav" aria-label="main navigation">
+        <a href="#projects">Experiments</a>
+        <a href="#about">About</a>
+        <a href="#manifesto">Manifesto</a>
+        <a href="#contact" class="cta" style="background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:10px 14px;border-radius:12px">Contact</a>
+      </nav>
+    </header>
+
+    
+    <!-- Hero Section -->
+    <section class="main-hero">
+        <h1 class="text-5xl md:text-7xl font-bold glow-red mb-4"  id="hero-text"></h1>
+    </section>
+
+    <!-- Hero -->
+    <section class="hero panel" aria-labelledby="hero-title">
+      <div class="hero-top">
+        <div class="hero-left">
+          <span class="tag">Zerogrowth • Labs & Ventures</span>
+          <h2 id="hero-title" class="title">Growth starts at Zero — we turn experiments into real products</h2>
+          <div class="subtitle">Zerogrowth is a holding lab where I build, test, and refine small products — from AI tools and automation to games, robotics, and creative productions. Each project is a seed: validated, iterated, and scaled or spun off.</div>
+          <div class="typing" id="typing-line">Crafting systems with soul</div>
+        </div>
+
+        <aside class="hero-right">
+          <div class="stats-card panel" aria-hidden="true">
+            <!-- GitHub stats image (keep dynamic) -->
+            <img src="https://github-readme-stats.vercel.app/api?username=nurhabibassolihudin&show_icons=true&theme=radical&title_color=ff6f61&icon_color=ffb86b&text_color=0d1117&bg_color=ffffff" alt="GitHub stats">
+          </div>
+          <div style="font-size:13px;color:var(--muted);text-align:center">Founder • Nur — Art Engineer</div>
+        </aside>
       </div>
-      <div class="bg-[#111] p-6 rounded-2xl shadow hover:shadow-red-600/50 transition">
-        <h3 class="text-xl font-bold mb-2">AI Tools</h3>
-        <p class="text-gray-400">Integrating intelligence with usability. Tools that feel, not just serve.</p>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <h3 class="section-title">About / Philosophy</h3>
+      <div class="panel about-grid">
+        <div>
+          <p><strong>Zerogrowth</strong> began as a personal workshop: ideas, prototypes, and experiments. Today it is an umbrella for multiple projects — small teams, solo builds, technical playbooks — all validated in public and turned into spin-offs when they prove value.</p>
+          <p>We prioritize clarity, iteration, and measurable outcomes. If a project doesn't show product-market traction during testing, it becomes a lesson — archived, documented, and used to inform the next experiment.</p>
+          <p>Core focus areas: <strong>AI & Automation, Product Engineering, Game & Interaction Design, Robotics, and Creative Production.</strong></p>
+        </div>
+
+        <aside class="timeline">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <strong style="color:var(--white)">Timeline</strong>
+            <small style="color:var(--muted)">Selective</small>
+          </div>
+
+          <div class="tl-item">
+            <strong>2024 • ZeroGrowth founded</strong>
+            <span>Personal lab for experiments in software and product design.</span>
+          </div>
+          <div class="tl-item">
+            <strong>2024 • ZG_BTrade (proto)</strong>
+            <span>Backtesting engine & analytics — moving toward trading lab MVP.</span>
+          </div>
+          <div class="tl-item">
+            <strong>2024 • 0-Day (game)</strong>
+            <span>2D experimental game — testbed for emotional interactions.</span>
+          </div>
+          <div class="tl-item">
+            <strong>2025 • Flipbyte • Alimagine</strong>
+            <span>Working labels: Flipbyte (automation) • Alimagine (interactive studio).</span>
+          </div>
+        </aside>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Manifesto -->
-  <section class="bg-[#111] py-20 px-6 text-center">
-    <blockquote class="text-2xl italic text-gray-300 max-w-3xl mx-auto">
-      “We believe every experiment is a seed. Some fail, some grow, some become forests.”
-    </blockquote>
-  </section>
+    <!-- Projects -->
+    <section id="projects">
+      <h3 class="section-title">Experiments</h3>
+      <div class="panel">
+        <div class="filters" role="tablist" aria-label="project filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="labs">Labs</button>
+          <button class="filter-btn" data-filter="games">Games</button>
+          <button class="filter-btn" data-filter="studio">Studio</button>
+          <button class="filter-btn" data-filter="ventures">Ventures</button>
+        </div>
 
-  <!-- Footer -->
-  <footer class="py-10 text-center text-gray-500">
-    <p>© 2025 Zerogrowth Labs | Built with clarity & meaning</p>
-    <p class="mt-2">📫 <a href="mailto:your-email@example.com" class="text-red-500">Email</a> | <a href="https://www.linkedin.com/in/your-link/" target="_blank" class="text-red-500">LinkedIn</a> | <a href="https://github.com/zerogrowth" class="text-red-500">GitHub</a></p>
-  </footer>
+        <div class="projects-grid" id="projects-grid">
+          <!-- Card 1 -->
+          <article class="card" data-category="labs">
+            <h3>ZG_BTrade</h3>
+            <p>Backtesting & analytics lab — building reliable strategy sandbox and data pipelines.</p>
+            <div class="tags">
+              <span class="chip">Python</span>
+              <span class="chip">Data</span>
+              <span class="chip">Backtesting</span>
+            </div>
 
+            <div class="detail" aria-hidden="true">
+              <small>Stage: Prototype → MVP</small>
+              <p style="margin:8px 0;color:var(--muted);font-size:14px">Personal backtesting system, focused on reproducible analytics, strategy validation, and reporting. Next: UI for experiments and strategy marketplace wrapper.</p>
+              <a class="btn" href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card" data-category="games">
+            <h3>0-Day</h3>
+            <p>Emotional tactical 2D game — a playground for interactive systems and feedback loops.</p>
+            <div class="tags">
+              <span class="chip">Godot</span>
+              <span class="chip">Design</span>
+              <span class="chip">Prototype</span>
+            </div>
+
+            <div class="detail" aria-hidden="true">
+              <small>Stage: Experimental</small>
+              <p style="margin:8px 0;color:var(--muted);font-size:14px">A small game exploring player emotion and decision friction. Used to test narrative mechanics and micro-feedback systems.</p>
+              <a class="btn" href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card" data-category="labs">
+            <h3>AI Assistants</h3>
+            <p>LangChain-based copilots and automation agents for development and content workflows.</p>
+            <div class="tags">
+              <span class="chip">LangChain</span>
+              <span class="chip">Automation</span>
+              <span class="chip">NLP</span>
+            </div>
+
+            <div class="detail" aria-hidden="true">
+              <small>Stage: Active</small>
+              <p style="margin:8px 0;color:var(--muted);font-size:14px">Contextual assistants for code review, analytics, and internal operations. Integrations: APIs, queues, and monitoring pipelines.</p>
+              <a class="btn" href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="card" data-category="studio">
+            <h3>Flipbyte Tools</h3>
+            <p>Utility tooling & internal platforms for automation and secure data transfer.</p>
+            <div class="tags"><span class="chip">Automation</span><span class="chip">Security</span></div>
+            <div class="detail" aria-hidden="true">
+              <small>Stage: Building</small>
+              <p style="margin:8px 0;color:var(--muted);font-size:14px">Set of small tools to automate content pipelines, user onboarding flows, and secure transfer utilities for project collaboration.</p>
+              <a class="btn" href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="card" data-category="ventures">
+            <h3>Alimagine (Studio)</h3>
+            <p>Interactive experiences & media — bridging game mechanics and storytelling.</p>
+            <div class="tags"><span class="chip">Interactive</span><span class="chip">Audio</span></div>
+            <div class="detail" aria-hidden="true">
+              <small>Stage: Incubating</small>
+              <p style="margin:8px 0;color:var(--muted);font-size:14px">Small creative experiments that can scale into productized interactive media and micro-software experiences.</p>
+              <a class="btn" href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+
+          <!-- Card 6 (example) -->
+          <article class="card" data-category="labs">
+            <h3>Infrastructure & Observability</h3>
+            <p>Monitoring, deployment templates, and reproducible infra for experiments.</p>
+            <div class="tags"><span class="chip">Docker</span><span class="chip">K8s</span><span class="chip">Monitoring</span></div>
+            <div class="detail" aria-hidden="true">
+              <small>Stage: Reusable</small>
+              <p style="margin:8px 0;color:var(--muted);font-size:14px">Reusable infra blueprints for small projects — make deployments consistent and recoverable.</p>
+              <a class="btn" href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Manifesto -->
+    <section id="manifesto">
+      <h3 class="section-title">Manifesto</h3>
+      <div class="panel manifesto">
+        <p><em>We start at zero — deliberately. Zero removes bias, expectation, and pretense. From there we plant experiments, measure honestly, and follow the signal. We build only what proves value.</em></p>
+        <p style="color:var(--muted)">Principles: Clarity. Experimentation. Rapid iteration. Documented outcomes. Responsible spin-offs.</p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h3 class="section-title">Contact / Join</h3>
+      <div class="panel contact-grid">
+        <div>
+          <p style="color:var(--muted);margin-bottom:12px">Zerogrowth is open for collaboration, early partnerships, and technical consulting. If you have a product idea, research question, or an opportunity to test, let's talk.</p>
+
+          <div class="contact-card">
+            <h4>Work inquiries</h4>
+            <div class="contact-list">
+              <a href="mailto:your-email@example.com">✉ your-email@example.com</a>
+              <a href="https://www.linkedin.com/in/your-link/" target="_blank" rel="noopener">LinkedIn / Nur</a>
+              <a href="https://github.com/nurhabibassolihudin" target="_blank" rel="noopener">GitHub / zerogrowth</a>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <small style="color:var(--muted)">Want to pitch? Send a short summary (3–5 sentences) and a clear ask. We prioritize experiments that can be validated within 6–12 weeks.</small>
+          </div>
+        </div>
+
+        <aside>
+          <div class="contact-card" style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+            <strong>Subscribe</strong>
+            <small style="color:var(--muted)">Get short updates about experiments and public findings (no spam).</small>
+            <form id="subscribe-form" style="width:100%;display:flex;gap:8px;margin-top:6px">
+              <input id="email" type="email" placeholder="you@company.com" required style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--white)">
+              <button type="submit" style="padding:10px 12px;border-radius:8px;background:var(--accent);border:none;color:#fff;font-weight:600">Subscribe</button>
+            </form>
+            <div id="sub-msg" style="font-size:13px;color:var(--muted)"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <footer class="sitefoot">
+      <div>© <strong>Zerogrowth</strong> • Built by Nur — Art Engineer</div>
+      <div style="margin-top:6px;color:var(--muted)">Growth starts at zero. Meaning is built, not found.</div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
   <script>
-    // Typing effect
-    const text = "Crafting systems with soul";
-    let i = 0;
-    function typing() {
-      if (i < text.length) {
-        document.getElementById("typing").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typing, 80);
+    /* Typing effect */
+    (function(){
+      const el = document.getElementById('typing-line');
+      const head_text = "ZEROGROWTH — Indie Holding & Experimental Lab";
+      const text = 'Crafting systems with soul';
+      let i = 0;
+      let j = 0;
+      function typing() {
+        if (i < head_text.length) {
+            document.getElementById("hero-text").innerHTML += head_text.charAt(i);
+            i++;
+            setTimeout(typing, 80);
+        }
+        }
+        typing();
+      function tick(){
+        if(j<=text.length){
+          el.textContent = text.slice(0,j) + (j%2 ? '|' : '');
+          j++;
+          setTimeout(tick,80);
+        } else { el.textContent = text; }
       }
-    }
-    typing();
+      tick();
+    })();
 
-    // Background Canvas (particles)
-    const canvas = document.getElementById('bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
-
-    for (let i = 0; i < 100; i++) {
-      particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, dx: (Math.random()-0.5), dy: (Math.random()-0.5)});
-    }
-
-    function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.fillStyle = '#e63946';
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,2,0,Math.PI*2);
-        ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    /* Project filters */
+    (function(){
+      const buttons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.projects-grid .card');
+      buttons.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          buttons.forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.dataset.filter;
+          cards.forEach(c=>{
+            if(f==='all') { c.style.display='block'; return; }
+            c.style.display = (c.dataset.category === f) ? 'block' : 'none';
+          });
+          window.scrollTo({top: document.getElementById('projects').offsetTop - 20, behavior:'smooth'});
+        });
       });
-      requestAnimationFrame(draw);
-    }
-    draw();
+    })();
+
+    /* Subscribe form (simple simulation) */
+    (function(){
+      const form = document.getElementById('subscribe-form');
+      const msg = document.getElementById('sub-msg');
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        if(!email){ msg.textContent = 'Please enter a valid email.'; return; }
+        msg.textContent = 'Thanks — subscription received (simulated).';
+        form.reset();
+      });
+    })();
+
+    /* Background canvas: particle + network lines */
+    (function(){
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = innerWidth;
+      let H = canvas.height = innerHeight;
+      window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; init(); });
+
+      const NUM = Math.max(60, Math.floor((W*H)/90000));
+      let pts = [];
+
+      function rand(min,max){ return Math.random()*(max-min)+min; }
+
+      function init(){
+        pts = [];
+        for(let i=0;i<NUM;i++){
+          pts.push({
+            x: rand(0,W),
+            y: rand(0,H),
+            vx: rand(-0.25,0.25),
+            vy: rand(-0.25,0.25),
+            r: rand(0.8,2.2)
+          });
+        }
+      }
+      init();
+
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        // optional subtle gradient overlay not needed, keep dark
+        // draw lines between close points
+        for(let i=0;i<pts.length;i++){
+          const a = pts[i];
+          for(let j=i+1;j<pts.length;j++){
+            const b = pts[j];
+            const dx = a.x-b.x, dy = a.y-b.y;
+            const dist = Math.sqrt(dx*dx+dy*dy);
+            if(dist < 120){
+              const alpha = 0.12 * (1 - dist/120);
+              ctx.strokeStyle = 'rgba(230,57,70,'+alpha+')';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x,a.y);
+              ctx.lineTo(b.x,b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        // draw dots
+        for(let p of pts){
+          ctx.fillStyle = 'rgba(230,57,70,0.95)';
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fill();
+          p.x += p.vx; p.y += p.vy;
+          if(p.x < 0 || p.x > W) p.vx *= -1;
+          if(p.y < 0 || p.y > H) p.vy *= -1;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+    })();
+
+    /* Accessibility: allow keyboard focus for cards to reveal detail */
+    (function(){
+      document.querySelectorAll('.card').forEach(card=>{
+        card.setAttribute('tabindex','0');
+        card.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' '){
+            const d = card.querySelector('.detail');
+            if(d.style.transform === 'translateY(0px)' || d.style.transform === 'translateY(0)') {
+              d.style.transform = '';
+            } else {
+              d.style.transform = 'translateY(0)';
+            }
+          }
+        });
+      });
+    })();
   </script>
 </body>
 </html>
