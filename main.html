@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeroGrowth | Nur – Art Engineer</title>
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d1117;
+      color: #e6edf3;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #ff6f61;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    .typing {
+      color: #ffb86b;
+      font-weight: bold;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    section h2 {
+      color: #ff6f61;
+      margin-bottom: 20px;
+      font-size: 1.6rem;
+    }
+
+    section p, section li {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li::before {
+      content: "⚡ ";
+      color: #ffb86b;
+    }
+
+    .tech-badges img {
+      margin: 5px;
+      height: 40px;
+      transition: transform 0.2s;
+    }
+
+    .tech-badges img:hover {
+      transform: scale(1.2);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid #222;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    footer a {
+      color: #ff6f61;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>⚙️ Nur – Art Engineer</h1>
+    <p><span id="typing" class="typing"></span></p>
+    <img src="https://github-readme-stats.vercel.app/api?username=nurhabibassolihudin&show_icons=true&theme=radical&title_color=ff6f61&icon_color=ffb86b&text_color=0d1117&bg_color=ffffff" alt="GitHub Stats" style="margin-top:30px; border-radius:12px; box-shadow:0 0 12px #ff6f61;">
+  </header>
+
+  <section>
+    <h2>🎯 Who I Am</h2>
+    <p><i>“Life is not just about being born and dying. It’s about feeling, failing, fighting, and finding meaning.”</i></p>
+    <p>I’m <b>Nur</b>, a back-end engineer with a soul of an artist.  
+    I create <b>AI systems</b> and <b>interactive tools</b> that combine precision, creativity, and emotion.  
+    My mission is simple: <b>craft systems with soul</b>.</p>
+  </section>
+
+  <section>
+    <h2>🔧 Currently Using</h2>
+    <div class="tech-badges">
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+      <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
+      <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres">
+      <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+      <img src="https://img.shields.io/badge/HTMX-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTMX">
+      <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS">
+    </div>
+  </section>
+
+  <section>
+    <h2>🧪 Building & Exploring</h2>
+    <ul>
+      <li><b>ZG_BTrade</b> – A personal backtesting system evolving into a full analytical trading lab</li>
+      <li><b>0-Day</b> – A simple emotional and tactical 2D game</li>
+      <li>Deepening my understanding of AI integration, game development, and value-driven product design</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>🔭 Future Tech Interests</h2>
+    <ul>
+      <li>Emotional feedback loops in interactive systems</li>
+      <li>Intelligent tools that feel, not just serve</li>
+      <li>Audio-visual storytelling in micro-software experiences</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p><i>“Growth starts at zero. Meaning is built, not found.”</i></p>
+    <p>⚡ Let’s build with clarity. Let’s design with meaning.</p>
+    <p>📫 Reach me via <a href="mailto:your-email@example.com">Email</a> or <a href="https://www.linkedin.com/in/your-link/" target="_blank">LinkedIn</a>.</p>
+  </footer>
+
+  <script>
+    // Typing effect for tagline
+    const text = "Crafting systems with soul";
+    let i = 0;
+    function typing() {
+      if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, 100);
+      }
+    }
+    typing();
+  </script>
+
+</body>
+</html>
