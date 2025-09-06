@@ -3,166 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZeroGrowth | Nur – Art Engineer</title>
+  <title>Zerogrowth – Experiments with Meaning</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0d1117;
-      color: #e6edf3;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    header {
-      text-align: center;
-      padding: 60px 20px 20px;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      color: #ff6f61;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      color: #aaa;
-    }
-
-    .typing {
-      color: #ffb86b;
-      font-weight: bold;
-    }
-
-    section {
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 20px;
-      animation: fadeIn 1.5s ease-in;
-    }
-
-    section h2 {
-      color: #ff6f61;
-      margin-bottom: 20px;
-      font-size: 1.6rem;
-    }
-
-    section p, section li {
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    ul {
-      list-style: none;
-    }
-
-    li::before {
-      content: "⚡ ";
-      color: #ffb86b;
-    }
-
-    .tech-badges img {
-      margin: 5px;
-      height: 40px;
-      transition: transform 0.2s;
-    }
-
-    .tech-badges img:hover {
-      transform: scale(1.2);
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      border-top: 1px solid #222;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-
-    footer a {
-      color: #ff6f61;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    body { background-color: #0d0d0d; color: #fefefe; }
+    .glow-red:hover { text-shadow: 0 0 8px #e63946; }
+    canvas { position: fixed; top: 0; left: 0; z-index: -1; }
   </style>
 </head>
-<body>
+<body class="font-inter">
+  <canvas id="bg"></canvas>
 
-  <header>
-    <h1>⚙️ Nur – Art Engineer</h1>
-    <p><span id="typing" class="typing"></span></p>
-    <img src="https://github-readme-stats.vercel.app/api?username=nurhabibassolihudin&show_icons=true&theme=radical&title_color=ff6f61&icon_color=ffb86b&text_color=0d1117&bg_color=ffffff" alt="GitHub Stats" style="margin-top:30px; border-radius:12px; box-shadow:0 0 12px #ff6f61;">
-  </header>
-
-  <section>
-    <h2>🎯 Who I Am</h2>
-    <p><i>“Life is not just about being born and dying. It’s about feeling, failing, fighting, and finding meaning.”</i></p>
-    <p>I’m <b>Nur</b>, a back-end engineer with a soul of an artist.  
-    I create <b>AI systems</b> and <b>interactive tools</b> that combine precision, creativity, and emotion.  
-    My mission is simple: <b>craft systems with soul</b>.</p>
+  <!-- Hero Section -->
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+    <h1 class="text-5xl md:text-7xl font-bold glow-red mb-4">ZEROGROWTH</h1>
+    <p id="typing" class="text-lg md:text-2xl text-red-500 font-mono"></p>
+    <p class="mt-6 max-w-2xl text-gray-300">Growth starts at Zero. Zerogrowth is where experiments become meaning. We build, test, and evolve projects until they find their true shape.</p>
   </section>
 
-  <section>
-    <h2>🔧 Currently Using</h2>
-    <div class="tech-badges">
-      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-      <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
-      <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres">
-      <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-      <img src="https://img.shields.io/badge/HTMX-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTMX">
-      <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS">
+  <!-- Projects Section -->
+  <section class="max-w-6xl mx-auto py-20 px-6">
+    <h2 class="text-3xl font-bold text-red-500 mb-8">Experiments</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-[#111] p-6 rounded-2xl shadow hover:shadow-red-600/50 transition">
+        <h3 class="text-xl font-bold mb-2">ZG_BTrade</h3>
+        <p class="text-gray-400">Backtesting & trading lab evolving into full analytical system.</p>
+      </div>
+      <div class="bg-[#111] p-6 rounded-2xl shadow hover:shadow-red-600/50 transition">
+        <h3 class="text-xl font-bold mb-2">0-Day</h3>
+        <p class="text-gray-400">Emotional & tactical 2D game. A testbed for game + emotion systems.</p>
+      </div>
+      <div class="bg-[#111] p-6 rounded-2xl shadow hover:shadow-red-600/50 transition">
+        <h3 class="text-xl font-bold mb-2">AI Tools</h3>
+        <p class="text-gray-400">Integrating intelligence with usability. Tools that feel, not just serve.</p>
+      </div>
     </div>
   </section>
 
-  <section>
-    <h2>🧪 Building & Exploring</h2>
-    <ul>
-      <li><b>ZG_BTrade</b> – A personal backtesting system evolving into a full analytical trading lab</li>
-      <li><b>0-Day</b> – A simple emotional and tactical 2D game</li>
-      <li>Deepening my understanding of AI integration, game development, and value-driven product design</li>
-    </ul>
+  <!-- Manifesto -->
+  <section class="bg-[#111] py-20 px-6 text-center">
+    <blockquote class="text-2xl italic text-gray-300 max-w-3xl mx-auto">
+      “We believe every experiment is a seed. Some fail, some grow, some become forests.”
+    </blockquote>
   </section>
 
-  <section>
-    <h2>🔭 Future Tech Interests</h2>
-    <ul>
-      <li>Emotional feedback loops in interactive systems</li>
-      <li>Intelligent tools that feel, not just serve</li>
-      <li>Audio-visual storytelling in micro-software experiences</li>
-    </ul>
-  </section>
-
-  <footer>
-    <p><i>“Growth starts at zero. Meaning is built, not found.”</i></p>
-    <p>⚡ Let’s build with clarity. Let’s design with meaning.</p>
-    <p>📫 Reach me via <a href="mailto:your-email@example.com">Email</a> or <a href="https://www.linkedin.com/in/your-link/" target="_blank">LinkedIn</a>.</p>
+  <!-- Footer -->
+  <footer class="py-10 text-center text-gray-500">
+    <p>© 2025 Zerogrowth Labs | Built with clarity & meaning</p>
+    <p class="mt-2">📫 <a href="mailto:your-email@example.com" class="text-red-500">Email</a> | <a href="https://www.linkedin.com/in/your-link/" target="_blank" class="text-red-500">LinkedIn</a> | <a href="https://github.com/zerogrowth" class="text-red-500">GitHub</a></p>
   </footer>
 
   <script>
-    // Typing effect for tagline
+    // Typing effect
     const text = "Crafting systems with soul";
     let i = 0;
     function typing() {
       if (i < text.length) {
         document.getElementById("typing").innerHTML += text.charAt(i);
         i++;
-        setTimeout(typing, 100);
+        setTimeout(typing, 80);
       }
     }
     typing();
-  </script>
 
+    // Background Canvas (particles)
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    for (let i = 0; i < 100; i++) {
+      particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, dx: (Math.random()-0.5), dy: (Math.random()-0.5)});
+    }
+
+    function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = '#e63946';
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,2,0,Math.PI*2);
+        ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
 </body>
 </html>
